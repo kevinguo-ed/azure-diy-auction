@@ -1,0 +1,16 @@
+{
+  "name": "azure_diy_auction",
+  "version": "1.0.0",
+  "description": "This project uses TailwindCSS for styling.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "tailwindcss": "^3.2.7"
+  }
+}
