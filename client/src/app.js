@@ -8,11 +8,12 @@ const OVERLAY_place_bid = document.querySelector("#overlay-place_bid");
 const BTN_close_bid_overlay = document.querySelector("#btn-close_bid_overlay");
 const BTN_place_bid = document.querySelector("#btn-place_bid");
 
+async function negotiate(){
+  return await (await fetch(`/negotiate`)).text();
+}
 (async function connect() {
   const client = new WebPubSubClient({
-    getClientAccessUrl: async _ => {
-      return await (await fetch(`/negotiate`)).text();
-    }
+    getClientAccessUrl: negotiate
   });
   
   client.on('server-message', e => {
@@ -48,3 +49,5 @@ BTN_new_bid.addEventListener("click", () => {
 BTN_close_bid_overlay.addEventListener("click", () => {
   OVERLAY_place_bid.classList.toggle("hidden");
 });
+
+fetch("/get-current-bid").then(res => res.text()).then(text => FIELD_current_bid.innerText = text);
