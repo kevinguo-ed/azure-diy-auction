@@ -9,7 +9,7 @@ app.listen(port, () => console.log(`Open http://localhost:${port}/index.html`));
 let serviceClient = new WebPubSubServiceClient(process.env.ConnectionString, "auction");
 app.get("/negotiate", async (req, res) => {
     let token = await serviceClient.getClientAccessToken();
-    res.status(200).send(token.url);
+    res.send(token.url);
 });
 app.post('/bid', async (req, res) => {
     const bidQuery = req.query.bid;
@@ -19,9 +19,9 @@ app.post('/bid', async (req, res) => {
             maxBid = bid;
             await serviceClient.sendToAll({currentBid: maxBid});
         }
-        res.status(200).send(maxBid);
+        res.send(200, maxBid);
     } catch (err){
         console.log(err);
-        res.status(400).send(err);
+        res.send(400, err);
     }
 });
