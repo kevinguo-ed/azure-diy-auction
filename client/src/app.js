@@ -1,4 +1,5 @@
-//
+import {WebPubSubClient} from "@azure/web-pubsub-client"
+
 const BTN_bid = document.querySelector("#btn-bid");
 const FIELD_current_bid = document.querySelector("#bid-current");
 const BTN_new_bid = document.querySelector("#btn-place_bid");
@@ -7,24 +8,24 @@ const OVERLAY_place_bid = document.querySelector("#overlay-place_bid");
 const BTN_close_bid_overlay = document.querySelector("#btn-close_bid_overlay");
 const BTN_place_bid = document.querySelector("#btn-place_bid");
 
-async function connect(){
-  let res = await fetch("/negotiate");
-  let url = await res.text();
-  let websocket = new WebSocket(url);
-  websocket.onopen = () => {
-    console.log("WebSocket opened");
-  };
-  websocket.onmessage = e => {
-    console.log(e.data);
-    // {currentBid: maxBid}
-    let bid = JSON.parse(e.data).currentBid;
-    FIELD_current_bid.innerText = bid;
-  }
-}
-connect();
+(async function connect() {
+  const client = new WebPubSubClient({
+    getClientAccessUrl: async _ => {
+      return await (await fetch(`/negotiate`)).text();
+    }
+  });
+  
+  client.on('server-message', e => {
+    FIELD_current_bid.innerText = e.message.data.currentBid;
+  })
+
+  await client.start();
+})();
+
 BTN_bid.addEventListener("click", () => {
   OVERLAY_place_bid.classList.toggle("hidden");
 });
+
 BTN_new_bid.addEventListener("click", () => {
   let value = document.getElementById("new-bid").value;
   let body = JSON.stringify({bid: value});
@@ -42,7 +43,8 @@ BTN_new_bid.addEventListener("click", () => {
   }).catch((e)=>{
     document.getElementById("error").innerText = e;
   });
-})
+});
+
 BTN_close_bid_overlay.addEventListener("click", () => {
   OVERLAY_place_bid.classList.toggle("hidden");
 });
