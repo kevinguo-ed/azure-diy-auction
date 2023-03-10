@@ -19,10 +19,9 @@
       class="fixed flex hidden h-screen w-screen items-center justify-center bg-slate-700 bg-opacity-30"
       id="overlay-place_bid"
     >
-      <form
-        method="post"
-        action="/bid"
+      <div
         class="min-w-[450px] rounded-md bg-white py-6 px-10"
+        id="post-bid"
       >
         <header class="mb-5 flex items-center justify-between">
           <h1 class="font-accent text-2xl">Enter your bid</h1>
@@ -39,19 +38,19 @@
             >New bid</label
           >
           <input
-            placeholder="00"
-            id="new-bid"
+            placeholder="20,000"
+            id="new-bid" name="bid"
             class="border-b border-gray-600 py-2 px-2 text-sm font-light"
           />
         </div>
+        <p id="error"></p>
         <button
           class="w-full rounded-sm bg-slate-800 py-4 text-sm text-gray-100"
           id="btn-place_bid"
-          type="submit"
         >
           Place bid
         </button>
-      </form>
+      </div>
     </div>
 
     <!-- Site navigation -->
